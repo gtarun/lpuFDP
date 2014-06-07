@@ -77,50 +77,9 @@ class SiteController extends Controller
 	/**
 	 * Displays the login page
 	 */
+
+
 	public function actionLogin()
-	{
-		if(isset(Yii::app()->user->profile))
-			$this->redirect(array('/'));
-		$model=new LoginForm;
-		$users	=	new Users;
-		$forgot	=	new ForgotpasswordForm;
-
-		// if it is ajax validation request
-		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-
-		// collect user input data
-		if(isset($_POST['LoginForm']))
-		{
-			$model->attributes=$_POST['LoginForm'];
-			// validate user input and redirect to the previous page if valid
-			if($model->validate() && $model->loginStatus() && $model->login()){
-				if(Yii::app()->user->role=='admin'){
-					$this->redirect(array('/admin/users/admin'));
-				}
-				elseif(Yii::app()->user->role=='client'){
-					$this->redirect(array('/client/index'));
-				}
-				elseif(Yii::app()->user->role=='supplier'){
-					$this->redirect(array('/supplier/index'));
-				}else{
-					$this->redirect(array('/site/login'));
-				}
-			}else{
-				Yii::app()->user->setFlash('loginError','Username or password is not valid or email is not verified.');
-			}
-		}
-
-		// display the login form
-		$this->render('login',array('users'=>$users,'model'=>$model,'forgot'=>$forgot));
-	}
-
-
-
-	public function actionSupplier()
 	{
 		//$tokenGen = new ServicesFirebaseTokenGenerator(APP_SECRET);
 		 if(isset(Yii::app()->user->role))
@@ -219,7 +178,7 @@ class SiteController extends Controller
 			echo json_encode($response);
 			die;
 		}
-		$this->render('login-supplier',array('users'=>$users,'model'=>$model,'forgot'=>$forgot)	);
+		$this->render('login',array('users'=>$users,'model'=>$model,'forgot'=>$forgot)	);
 	}
 	/**
 	 * Logs out the current user and redirect to homepage.
