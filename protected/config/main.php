@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'My Web Application',
+	'name'=>'FDP Session',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -16,10 +16,12 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+        'ext.LinkedIn.*',
 	),
 
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
+        'admin',
 
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
@@ -36,6 +38,17 @@ return array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
+        'Smtpmail'=>array(
+            'class'=>'application.extensions.smtpmail.PHPMailer',
+            'Host'=>"smtp.gmail.com",
+            'Username'=>'questions@venturepact.com',
+            'Password'=>'question@vp@)!$',
+            'Mailer'=>'smtp',
+			'SMTPSecure' => "ssl",
+            'Port'=>465,
+            'SMTPAuth'=>true,
+			'IsHTML'=>true,
+        ),
 		// uncomment the following to enable URLs in path-format
 		/*
 		'urlManager'=>array(
