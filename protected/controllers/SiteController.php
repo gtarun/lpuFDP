@@ -168,4 +168,38 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+    public function actionNewPassword()
+	{
+		if(!isset(Yii::app()->session['passwordEmail']))
+			$this->redirect(Yii::app()->createUrl('/site/resetPassword'));
+		$model     =    new NewpasswordForm;
+		if(isset($_POST['NewpasswordForm'])){
+			$model->attributes=$_POST['NewpasswordForm'];
+			if($model->validate())
+			{
+				$record = Users::model()->findByAttributes(array('username'=>Yii::app()->session['passwordEmail']));
+				$record->password            =    $model->new_password;
+				if($record->save()){
+					$login     =    new LoginForm;
+					$login->username     =  Yii::app()->session['passwordEmail']  ;
+					$login->password     =  $model->new_password ;
+					if($login->validate() && $login->login()){
+						if(Yii::app()->user->role=='admin'){
+							Yii::app()->user->setFlash('success','Your new password has been sent to the email address you provided.');
+							unset(Yii::app()->session['passwordEmail']);
+							$this->redirect(array('admin/users'));
+						}else{
+							Yii::app()->user->setFlash('success','Your new password has been sent to the email address you provided.');
+							unset(Yii::app()->session['passwordEmail']);
+							$this->redirect(Yii::app()->createUrl('/'.Yii::app()->user->role));
+						}
+					}
+				}
+				else
+					die('error');
+			}
+		}
+		$this->render('newPassword',array('model'=>$model));
+	}
+
 }
