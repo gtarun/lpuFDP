@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<link rel="shortcut icon" href="<?php echo Yii::app()->theme->baseUrl; ?>/main/style/images/favicon.png">
-        <title>VenturePact</title>
+        <title>FDP::Training Session</title>
         <meta name="description" content="Adminre admin dashboard">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
         <link rel="apple-touch-icon-precomposed" sizes="144x144" href="<?php echo Yii::app()->theme->baseUrl; ?>/image/touch/apple-touch-icon-144x144-precomposed.png">

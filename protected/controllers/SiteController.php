@@ -97,10 +97,14 @@ class SiteController extends Controller
 		// collect user input data
 		if(isset($_POST['LoginForm']))
 		{
+
 			$model->attributes=$_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login()){
-				$this->redirect(array('users/index'));
+                if($_POST['LoginForm']["username"]=="admin@fdp.com" && $_POST['LoginForm']["password"]=="admin")
+                    $this->redirect(array('admin/users/admin'));
+                else
+				    $this->redirect(array('users/index'));
 
 			}else{
 				Yii::app()->user->setFlash('loginError','Username or password is Invalid');

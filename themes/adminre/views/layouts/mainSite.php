@@ -6,7 +6,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <link rel="shortcut icon" href="<?php echo Yii::app()->theme->baseUrl; ?>/main/style/images/favicon.png">
-<title>VenturePact</title>
+<title>FDP::Training Session</title>
 <!-- Bootstrap core CSS -->
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/main/style/css/bootstrap.css" rel="stylesheet">
 <link href="<?php echo Yii::app()->theme->baseUrl; ?>/main/style/css/settings.css" rel="stylesheet">

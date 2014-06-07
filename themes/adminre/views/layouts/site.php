@@ -15,7 +15,7 @@ CONTACT : pampersdry@gmail.com
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<link rel="shortcut icon" href="<?php echo Yii::app()->theme->baseUrl; ?>/main/style/images/favicon.png">
-        <title>VenturePact</title>
+        <title>FDP::Training Session</title>
         <meta name="description" content="Adminre admin dashboard">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
 
