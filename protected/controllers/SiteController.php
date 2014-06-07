@@ -124,22 +124,10 @@ class SiteController extends Controller
             }else{
                 $users = new Users;
                 $users->attributes	=	$_POST['Users'];
-                $users->role_id		=	3;
                 $users->status		=	1;
                 if($users->save())
                 {
-                    $profile	                =	new Suppliers;
-                    $profile->name			    =	"";
-                    $profile->first_name	    =	$users->display_name;
-                    $profile->last_name	        =	$users->role;
-                    //$profile->logo              =   "uploads/client/small/avatar.png";
-                    $profile->users_id		    =	$users->id;
-                    $profile->cities_id		    =	134717; //default for new york
-                    $profile->status		    =	0;
-                    $profile->add_date		    =	date('Y-m-d H:i:s');
-                    $profile->save();
-
-                    $data['name']		=	$users->display_name;
+                    $data['name']		=	$users->first_name;
                     $data['email']		=	$users->username;
                     $data['password']	=	$users->password;
                     //$this->sendMail($data,'register');

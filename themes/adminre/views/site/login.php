@@ -1,3 +1,4 @@
+
 <!-- Application stylesheet : mandatory -->
 	<link rel="stylesheet" href="<?php echo Yii::app()->theme->baseUrl; ?>/stylesheet/uielement.css">
 <!--/ Application stylesheet -->
@@ -131,7 +132,7 @@
 										<span class="text-danger">*</span>
 									</label>
 									<div class="has-icon pull-right">
-										<?php echo $form->textField($users,'display_name',array('placeholder'=>"First Name",'class'=>'form-control','required'=>'required','data-parsley-type'=>"alphanum",'data-parsley-minlength'=>"2"));?>
+										<?php echo $form->textField($users,'first_name',array('placeholder'=>"First Name",'class'=>'form-control','required'=>'required','data-parsley-type'=>"alphanum",'data-parsley-minlength'=>"2"));?>
 
 										<!--<i class="ico-checkmark form-control-icon icon-top"></i>-->
 									</div>
@@ -141,7 +142,7 @@
 										<span class="text-danger">*</span>
 									</label>
 									<div class="has-icon pull-right">
-										<?php echo $form->textField($users,'role',array('placeholder'=>"Last Name",'class'=>'form-control','required'=>'required','data-parsley-type'=>"alphanum",'data-parsley-minlength'=>"2"));?>
+										<?php echo $form->textField($users,'last_name',array('placeholder'=>"Last Name",'class'=>'form-control','required'=>'required','data-parsley-type'=>"alphanum",'data-parsley-minlength'=>"2"));?>
 										<!--<i class="ico-checkmark form-control-icon icon-top"></i>-->
 									</div>
 								</div>
@@ -233,7 +234,7 @@
 
 				$.ajax({
 					type: 'POST',
-					url: "<?php echo CController::createUrl('/site/supplier');?>",
+					url: "<?php echo CController::createUrl('/site/login');?>",
 					data: that.serialize(),
 					success: function (data) {
 						console.log("data recieved " + JSON.stringify(data));
@@ -257,7 +258,7 @@
 							e.preventDefault();
 
 							console.log("ready to redirect");
-							var redirectURL = "<?php echo CController::createUrl('/supplier');?>";
+							var redirectURL = "<?php echo CController::createUrl('/users');?>";
 							setTimeout(redirectToURL(redirectURL), 3500);
 							$("#signupButSat").attr("disabled").text("");
 						} else {
