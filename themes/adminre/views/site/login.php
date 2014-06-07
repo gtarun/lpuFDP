@@ -12,7 +12,7 @@
 	<!-- START row -->
 	<div class="row">
 		<div class="col-lg-12 text-center">
-			<h3 class="title light text-grey5 mtb22">Start getting quality vetted leads...</h3>
+			<h3 class="title light text-grey5 mtb22">Welcome To FDP programme on Online Publishing Website using PHP</h3>
 		</div>
 	</div>
 	<!--/ END row -->

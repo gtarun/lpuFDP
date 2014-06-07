@@ -81,7 +81,7 @@ class SiteController extends Controller
 
 	public function actionLogin()
 	{
-		//$tokenGen = new ServicesFirebaseTokenGenerator(APP_SECRET);
+
 		 if(isset(Yii::app()->user->role))
 			$this->redirect(array('/'.Yii::app()->user->role));
 
@@ -100,12 +100,8 @@ class SiteController extends Controller
 			$model->attributes=$_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login()){
+				$this->redirect(array('users/index'));
 
-				if(Yii::app()->user->role=='supplier'){
-					$this->redirect(array('supplier/index'));
-				}else{
-					$this->redirect(array('site/login'));
-				}
 			}else{
 				Yii::app()->user->setFlash('loginError','Username or password is Invalid');
 			}
