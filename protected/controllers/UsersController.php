@@ -3,6 +3,7 @@
 class UsersController extends Controller
 {
 
+    public $allowed = array("certificate","index");
 	public function filters()
     {
 		return array(
@@ -14,7 +15,7 @@ class UsersController extends Controller
     {
 		return array(
         	array('allow', // allow authenticated user to perform 'create' and 'test' actions
-				  'actions'=>array('index'),
+				  'actions'=>$this->allowed,
 				  'users'=>array('@'),
 				 ),
 			array('deny',  // deny all users
@@ -25,13 +26,19 @@ class UsersController extends Controller
 
 	public function actionIndex()
 	{
-		$this->render('index');
+        $questions = Questions::model()->findAllByAttributes(array("status"=>1));
+        //CVarDumper::dump($questions,10,1);die;
+		$this->render('index',array("questions"=>$questions));
 	}
 	public function actionView()
 	{
 		$this->render('index');
 	}
 
+    public function actionCertificate()
+    {
+        $this->render("certificate");
+    }
 	// Uncomment the following methods and override them if needed
 	/*
 	public function filters()
