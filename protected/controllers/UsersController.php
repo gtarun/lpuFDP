@@ -46,6 +46,8 @@ class UsersController extends Controller
             $user->is_complete =1;
             $user->total  =$right_count.",".count($allquestions);
             $user->save();
+            Yii::app()->user->profile->is_complete =1;
+            Yii::app()->user->profile->total =$user->total;
             $this->redirect(array("users/certificate"));
 
 
