@@ -18,6 +18,7 @@
                 <!-- panel body -->
                 <div class="panel-body" >
                     <?php $html=$this->renderPartial("_temp1",array("users"=>yii::app()->user->profile)); ?>
+                    <?php //$html=$this->renderPartial("_temp2",array("users"=>yii::app()->user->profile)); ?>
                     <?php echo $html; ?>
 
                 </div>
