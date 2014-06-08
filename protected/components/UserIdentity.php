@@ -29,11 +29,8 @@ class UserIdentity extends CUserIdentity
 		{
 			$this->setState('id', $record->id);
 			$this->setState('profile', $record);
-            if($record->username == "admin@fdp.com" && $record->password == "admin"){
-                $this->setState('role', 1);
-            }else{
-                $this->setState('role', 0);
-            }
+
+            $this->setState('role', $record->role->name);
 			$this->setState('name', $record->first_name." ".$record->last_name);
 			$this->errorCode=self::ERROR_NONE;
 		}

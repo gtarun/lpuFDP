@@ -1,26 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "answers".
+ * This is the model class for table "roles".
  *
- * The followings are the available columns in table 'answers':
+ * The followings are the available columns in table 'roles':
  * @property integer $id
- * @property integer $questions_id
- * @property string $answer
- * @property integer $is_right
+ * @property string $name
+ * @property integer $status
  * @property string $created
  *
  * The followings are the available model relations:
- * @property Questions $questions
+ * @property Users[] $users
  */
-class Answers extends CActiveRecord
+class Roles extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'answers';
+		return 'roles';
 	}
 
 	/**
@@ -31,11 +30,12 @@ class Answers extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('questions_id, answer, is_right, created', 'required'),
-			array('questions_id, is_right', 'numerical', 'integerOnly'=>true),
+			array('created', 'required'),
+			array('status', 'numerical', 'integerOnly'=>true),
+			array('name', 'length', 'max'=>100),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, questions_id, answer, is_right, created', 'safe', 'on'=>'search'),
+			array('id, name, status, created', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,7 +47,7 @@ class Answers extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'questions' => array(self::BELONGS_TO, 'Questions', 'questions_id'),
+			'users' => array(self::HAS_MANY, 'Users', 'role_id'),
 		);
 	}
 
@@ -58,9 +58,8 @@ class Answers extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'questions_id' => 'Questions',
-			'answer' => 'Answer',
-			'is_right' => 'Is Right',
+			'name' => 'Name',
+			'status' => 'Status',
 			'created' => 'Created',
 		);
 	}
@@ -84,9 +83,8 @@ class Answers extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('questions_id',$this->questions_id);
-		$criteria->compare('answer',$this->answer,true);
-		$criteria->compare('is_right',$this->is_right);
+		$criteria->compare('name',$this->name,true);
+		$criteria->compare('status',$this->status);
 		$criteria->compare('created',$this->created,true);
 
 		return new CActiveDataProvider($this, array(
@@ -98,7 +96,7 @@ class Answers extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Answers the static model class
+	 * @return Roles the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

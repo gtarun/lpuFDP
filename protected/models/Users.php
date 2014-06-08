@@ -5,12 +5,20 @@
  *
  * The followings are the available columns in table 'users':
  * @property integer $id
+ * @property integer $role_id
  * @property string $username
  * @property string $password
  * @property string $first_name
  * @property string $last_name
  * @property string $designation
+ * @property string $pic
+ * @property integer $is_complete
+ * @property string $total
+ * @property integer $status
  * @property string $created
+ *
+ * The followings are the available model relations:
+ * @property Roles $role
  */
 class Users extends CActiveRecord
 {
@@ -30,11 +38,14 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, password, first_name, last_name, designation', 'length', 'max'=>500),
+			array('role_id', 'required'),
+			array('role_id, is_complete, status', 'numerical', 'integerOnly'=>true),
+			array('username, password, first_name, last_name, designation, pic', 'length', 'max'=>500),
+			array('total', 'length', 'max'=>100),
 			array('created', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, username, password, first_name, last_name, designation, created', 'safe', 'on'=>'search'),
+			array('id, role_id, username, password, first_name, last_name, designation, pic, is_complete, total, status, created', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -46,6 +57,7 @@ class Users extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'role' => array(self::BELONGS_TO, 'Roles', 'role_id'),
 		);
 	}
 
@@ -56,11 +68,16 @@ class Users extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'role_id' => 'Role',
 			'username' => 'Username',
 			'password' => 'Password',
 			'first_name' => 'First Name',
 			'last_name' => 'Last Name',
 			'designation' => 'Designation',
+			'pic' => 'Pic',
+			'is_complete' => 'Is Complete',
+			'total' => 'Total',
+			'status' => 'Status',
 			'created' => 'Created',
 		);
 	}
@@ -84,11 +101,16 @@ class Users extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
+		$criteria->compare('role_id',$this->role_id);
 		$criteria->compare('username',$this->username,true);
 		$criteria->compare('password',$this->password,true);
 		$criteria->compare('first_name',$this->first_name,true);
 		$criteria->compare('last_name',$this->last_name,true);
 		$criteria->compare('designation',$this->designation,true);
+		$criteria->compare('pic',$this->pic,true);
+		$criteria->compare('is_complete',$this->is_complete);
+		$criteria->compare('total',$this->total,true);
+		$criteria->compare('status',$this->status);
 		$criteria->compare('created',$this->created,true);
 
 		return new CActiveDataProvider($this, array(
