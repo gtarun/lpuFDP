@@ -9,9 +9,8 @@
  * @property integer $answer_id
  *
  * The followings are the available model relations:
+ * @property Answers $answer
  * @property Questions $question
- * @property UsersAnswer $answer
- * @property UsersAnswer[] $usersAnswers
  */
 class UsersAnswer extends CActiveRecord
 {
@@ -47,9 +46,8 @@ class UsersAnswer extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+			'answer' => array(self::BELONGS_TO, 'Answers', 'answer_id'),
 			'question' => array(self::BELONGS_TO, 'Questions', 'question_id'),
-			'answer' => array(self::BELONGS_TO, 'UsersAnswer', 'answer_id'),
-			'usersAnswers' => array(self::HAS_MANY, 'UsersAnswer', 'answer_id'),
 		);
 	}
 

@@ -149,66 +149,11 @@ $(document).ready(function(){
 	//New code added to scroll the div on the top
 	$("#main").scrollTop(0);
 
-	//Code to say no data found for category of rfp
-	$("#components li,#faq li a").click(function(e){
-        $("[data-target^=#p_]").parent().parent().find("li").removeClass("active2")
-		if(e.isDefaultPrevented())
-			e.preventDefault()
-		var el = $(this);
-		//console.log("outer li " + el.html() + " /" +e.isDefaultPrevented() );
-		$("#components li,#faq li").each(function(){
-			$(this).removeClass("activeLink");
-		});
-		el.addClass("activeLink");
-	});
 
-	$("#rfps li").click(function(e){
-			e.preventDefault();
-			var el = $(this);
-			//console.log("outer li " + el.html());
-			$("#rfps li").each(function(){
-				$(this).removeClass("active");
-			});
-			el.addClass("active");
-			el.parent().parent().addClass("active");
-		});
-		/*$("#rfps li [id^=project] li").click(function(e){
-			var el = $(this);
-			//console.log("inner li " + el.html());
-			$("#rfps li [id^=project] li").each(function(){
-				$(this).removeClass("active");
-			});
-			$("#rfps li [id^=project] li").first().addClass("active");
-		});*/
-
-		$("[data-target^=#p_]").click(function(e){
-            e.preventDefault();
-            var el = $(this);
-            var elclass= el.parent().attr("class") ;
-            console.log(elclass);
-            el.parent().parent().find("li").removeClass("active2");
-            el.parent().addClass("active2");
-            if(elclass=="")
-                el.parent().addClass("active2");
-        });
-        $("[id^=p_] a").on('click',function(){
-            $("[id^=p_] a").parent().removeClass("active2");
-            $(this).parent().addClass("active2") ;
-
-        });
 
 });
 
-function notificationRead(){
-	$.ajax({
-		type:'POST',
-		url:"<?php echo CController::createUrl("/site/notifictaion");?>",
-		success:function(data){
-			$('.hasnotification').removeClass('hasnotification');
-		}
-	});
-	$( "#ajaxLoadingDiv" ).hide();
-}
+
 
 $( document ).ajaxStart(function() {
 	$( "#ajaxLoadingDiv" ).show();
@@ -233,7 +178,7 @@ $(document).ready(function(){
 });
 </script>
 
-<script src="<?php echo Yii::app()->theme->baseUrl; ?>/javascript/notification.js"></script>
+
 <script src="<?php echo Yii::app()->theme->baseUrl; ?>/javascript/jquery.magnific-popup.min.js" ></script>
         <script type="application/javascript">
         $(document).ready(function(){

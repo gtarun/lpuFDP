@@ -12,6 +12,7 @@
  *
  * The followings are the available model relations:
  * @property Questions $questions
+ * @property UsersAnswer[] $usersAnswers
  */
 class Answers extends CActiveRecord
 {
@@ -48,6 +49,7 @@ class Answers extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'questions' => array(self::BELONGS_TO, 'Questions', 'questions_id'),
+			'usersAnswers' => array(self::HAS_MANY, 'UsersAnswer', 'answer_id'),
 		);
 	}
 

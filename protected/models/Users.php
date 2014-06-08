@@ -6,6 +6,7 @@
  * The followings are the available columns in table 'users':
  * @property integer $id
  * @property integer $role_id
+ * @property string $linkedin_id
  * @property string $username
  * @property string $password
  * @property string $first_name
@@ -40,12 +41,13 @@ class Users extends CActiveRecord
 		return array(
 			array('role_id', 'required'),
 			array('role_id, is_complete, status', 'numerical', 'integerOnly'=>true),
+			array('linkedin_id', 'length', 'max'=>250),
 			array('username, password, first_name, last_name, designation, pic', 'length', 'max'=>500),
 			array('total', 'length', 'max'=>100),
 			array('created', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, role_id, username, password, first_name, last_name, designation, pic, is_complete, total, status, created', 'safe', 'on'=>'search'),
+			array('id, role_id, linkedin_id, username, password, first_name, last_name, designation, pic, is_complete, total, status, created', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,6 +71,7 @@ class Users extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'role_id' => 'Role',
+			'linkedin_id' => 'Linkedin',
 			'username' => 'Username',
 			'password' => 'Password',
 			'first_name' => 'First Name',
@@ -102,6 +105,7 @@ class Users extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('role_id',$this->role_id);
+		$criteria->compare('linkedin_id',$this->linkedin_id,true);
 		$criteria->compare('username',$this->username,true);
 		$criteria->compare('password',$this->password,true);
 		$criteria->compare('first_name',$this->first_name,true);

@@ -26,6 +26,31 @@ class UsersController extends Controller
 
 	public function actionIndex()
 	{
+        if(isset($_POST["UsersAnswer"]))
+        {
+            $allquestions = array_keys($_POST["UsersAnswer"]);
+            $answer = CHtml::listData(Answers::model()->findAllByAttributes(array("questions_id"=>$allquestions)),"id","is_right");
+            //CVarDumper::dump($_POST["UsersAnswer"],10,1);die;
+            $right_count=0;
+            foreach($_POST["UsersAnswer"] as $key=>$q)
+            {
+                if($answer[$key]==1)
+                    $right_count++;
+                $ans = new  UsersAnswer;
+                $ans->question_id   = $key;
+                $ans->answer_id     = $q;
+                $ans->save();
+
+            }
+            $user = Users::model()->findByPk(Yii::app()->user->profile->id);
+            $user->is_complete =1;
+            $user->total  =$right_count.",".count($allquestions);
+            $user->save();
+            $this->redirect(array("users/certificate"));
+
+
+
+        }
         $questions = Questions::model()->findAllByAttributes(array("status"=>1));
         //CVarDumper::dump($questions,10,1);die;
 		$this->render('index',array("questions"=>$questions));
