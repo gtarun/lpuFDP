@@ -30,7 +30,7 @@
 
 				<!-- Social button -->
 				<div class="col-sm-12">
-					<a href="index.php?r=site/linkedin&lType=initiate&role=3" class="btn btn-social btn-block btn-linkedin">
+					<a href="index.php?r=site/linkedin&lType=initiate&role=1" class="btn btn-social btn-block btn-linkedin">
 						<i class="ico-linkedin2 mr15"></i>
 						Sign in with LinkedIn
 					</a>

@@ -361,56 +361,16 @@ class SiteController extends Controller
 					$company1	=	(isset($curPo['company']))?(array)$curPo['company']:array();
 					$company	=	(isset($company1['name']))?$company1['name']:'';
 				}
-				$location	=	explode(',',$loc['name']);
-				if(isset($location[1]) && isset($location[0])){
-					$stat	=	States::model()->findByAttributes(array('name'=>rtrim(ltrim(ucfirst($location[1]),' '),' ')));
-					if(empty($stat)){
-						$stat				=	new States;
-						$stat->name			=	rtrim(ltrim(ucfirst($location[1]),' '),' ');
-						$stat->description	=	'Data added from Linkedin';
-						$stat->price_zone_id=	1;
-						$stat->countries_id	=	1;
-						$stat->code			=	1;
-						$stat->code2			=	1;
-						$stat->status		=	1;
-						$stat->save();
-					}
-					$city	=	Cities::model()->findByAttributes(array('name'=>rtrim(ltrim(ucfirst($location[0]),' '),' '),'states_id'=>$stat->id));
-					if(empty($city)){
-						$city				=	new Cities;
-						$city->name			=	rtrim(ltrim(ucfirst($location[0]),' '),' ');
-						$city->description	=	'Data added from Linkedin';
-						$city->states_id	=	$stat->id;
-						$city->code			=	1;
-						$city->status		=	1;
-						$city->save();
-					}
-				}
-				else{
-					$city				=	Cities::model()->findByPk(9);
-				}
+
 				$linkedinId		=	$responseArray['id'];
 				$email			=	$responseArray['email-address'];
 				$phone			=	$responseArray['phone-numbers'];
-				$display_name	=	(isset($responseArray['first-name']))?$responseArray['first-name']:'';
+				$first_name	=	(isset($responseArray['first-name']))?$responseArray['first-name']:'';
 				$profileUrl		=	(isset($responseArray['public-profile-url']))?$responseArray['public-profile-url']:'';
 				$profilePic		=	(isset($responseArray['picture-url']))?$responseArray['picture-url']:'';
 				$last_name		=	(isset($responseArray['last-name']))?$responseArray['last-name']:'';
-				$education1		=	(array)$responseArray['educations'];
-				if(!empty($education1['education']))
-					$educations		=	$education1['education'];
-				else
-					$educations		=	array();
-				if(!empty($responseArray['positions']))
-					$position1		=	(array)$responseArray['positions'];
-				else
-					$position1		=	array();
 
-				if(!empty($position1) && !empty($position1['position']))
-					$positions		=	$position1['position'];
-				else
-					$positions		=	array();
-				$record_exists	=	Users::model()->find('linkedin = :linkedinId and username = :username', array(':linkedinId'=>$linkedinId,':username'=>$email));
+				$record_exists	=	Users::model()->find('linkedin_id = :linkedinId and username = :username', array(':linkedinId'=>$linkedinId,':username'=>$email));
 				if(!empty($record_exists)){
 					$model     			=     new LoginForm;
 					$model->username	=	$record_exists->username;
@@ -432,103 +392,46 @@ class SiteController extends Controller
 						$users->password		=	$password;
 						$users->status			=	1;
 						$users->role_id			=	$_REQUEST['role'];
-						$users->display_name	=	$display_name;
-						$users->add_date		=	date('Y-m-d H:i:s');
+						$users->first_name	    =	$first_name;
+						$users->created		=	date('Y-m-d H:i:s');
 					}
-					$users->linkedin			=	$linkedinId;
+					$users->linkedin_id			=	$linkedinId;
 					if($users->save())
 					{
-						if($_REQUEST['role']==2){
-							$profile	=	ClientProfiles::model()->find('users_id = :userId', array(':userId'=>$users->id));
-							if(empty($profile)){
-								$profile	                =	new ClientProfiles;
-								$profile->first_name	    =	$display_name;
-								$profile->last_name			=	$last_name;
-								$profile->email				=	$email;
-								$profile->phone_number		=	(isset($phone))?$phone:"";
-								$profile->image				=	$profilePic;
-								$profile->users_id		    =	$users->id;
-								$profile->cities_id		    =	$city->id;
-								$profile->company_name		=	(isset($company))?$company:'';
-								$profile->status			=	1;
-								$profile->add_date		    =	date('Y-m-d H:i:s');
-								$profile->save();
-							}
-							$model				=	new LoginForm;
-							$model->username	=	$users->username;
-							$model->password	=	$users->password;
-							if($model->login()){
-								$data['name']		=	$users->display_name;
-								$data['email']		=	$users->username;
-								$data['password']	=	$users->password;
-								$this->sendMail($data,'register');
-								if(isset(Yii::app()->user->role)){
-									$this->redirect(array('/'.Yii::app()->user->role));
-								}else{
-									$this->redirect(array('site/login'));
-								}
-							}
-							else{
-								Yii::app()->user->setFlash('error','Unable to connect linked in profile.');
-								$this->redirect(Yii::app()->createUrl('/site/login'));
-							}
-						}
-						else{
-							$profile	=	Suppliers::model()->find('users_id = :userId', array(':userId'=>$users->id));
-							if(empty($profile)){
-								$profile	                =	new Suppliers;
-								$profile->first_name	    =	$display_name;
-								$profile->last_name			=	$last_name;
-								$profile->name			    =	$users->display_name;
-								$profile->email				=	$email;
-								$profile->phone_number		=	(isset($phone))?$phone:"";
-								$profile->logo				=	$profilePic;
-								$profile->users_id		    =	$users->id;
-								$profile->cities_id		    =	$city->id;
-								$profile->status		    =	1;
-								$profile->add_date		    =	date('Y-m-d H:i:s');
-								$profile->save();
-								//CVarDumper::dump($profile,10,1);die;
-							}
-							$model				=	new LoginForm;
-							$model->username	=	$users->username;
-							$model->password	=	$users->password;
-							if($model->login()){
-								$data['name']		=	$users->display_name;
-								$data['email']		=	$users->username;
-								$data['password']	=	$users->password;
-								$this->sendMail($data,'register');
-								if(Yii::app()->user->role=='admin'){
-									$this->redirect(array('admin/admin'));
-								}
-								elseif(Yii::app()->user->role=='client'){
-									$this->redirect(array('client/index'));
-								}
-								elseif(Yii::app()->user->role=='supplier'){
-									$this->redirect(array('supplier/index'));
-								}else{
-									$this->redirect(array('site'));
-								}
-							}
-							else{
-								Yii::app()->user->setFlash('loginError','Unable to connect linked in profile.');
-								$this->redirect(Yii::app()->createUrl('/site/supplier'));
-							}
+                        $model				=	new LoginForm;
+						$model->username	=	$users->username;
+						$model->password	=	$users->password;
+						if($model->login()){
+						  $data['name']		=	$users->first_name;
+				          $data['email']	=	$users->username;
+				          $data['password']	=	$users->password;
+				          $this->sendMail($data,'register');
+				            if(isset(Yii::app()->user->role)){
+								$this->redirect(array('/'.Yii::app()->user->role));
+				            }else{
+								$this->redirect(array('site/login'));
+				            }
+				        }
+				        else{
+				            Yii::app()->user->setFlash('error','Unable to connect linked in profile.');
+				            $this->redirect(Yii::app()->createUrl('/site/login'));
+				        }
+				    }
 
-						}
-					}
-					else{
-						Yii::app()->user->setFlash('loginError','Unable to connect linked in profile.');
-						$this->redirect(Yii::app()->createUrl('/site/login'));
-					}
-                }
-			}
-			else{
+
+
+				}
+            }
+            else{
+				Yii::app()->user->setFlash('loginError','Unable to connect linked in profile.');
+				$this->redirect(Yii::app()->createUrl('/site/login'));
+            }
+        }
+        else{
 				Yii::app()->user->setFlash('loginError',"Error retrieving profile information:<br />RESPONSE:<br /><pre>".print_r($response)."</pre>");
 				$this->redirect(Yii::app()->createUrl('/site/login'));
 			}
-		}
-	//die('Done');
+
     }
 
 }
